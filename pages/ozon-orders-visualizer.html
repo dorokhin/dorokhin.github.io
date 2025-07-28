@@ -2,32 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Бимодальное распределение заказов OZON</title>
-  <!-- Bootstrap 5 CSS (latest) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom CSS with lighter grey and blue gradients -->
+  <title>Заказы OZON</title>
+  <!-- Tabler CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
   <style>
-    /* Overall page styling */
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #f7f9fc, #e2ebf5);
       color: #333;
       padding-bottom: 40px;
     }
-    h1, h2 {
-      font-weight: 500;
-      color: #dfe0ee;
-    }
-    /* Header card with blue gradient */
+
     .gradient-header {
-      background: linear-gradient(135deg, #3f51b5, #1a237e);
+      background: linear-gradient(to right, #8E54E9, #4776E6);
       padding: 20px;
       border-radius: 8px;
       margin-bottom: 20px;
       text-align: center;
       color: #fff;
     }
-    /* Card styling */
+
     .card {
       background-color: #f0f4f8;
       border: none;
@@ -35,135 +29,149 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       margin-bottom: 20px;
     }
-    .card-header {
-      background: linear-gradient(135deg, #64b5f6, #1e88e5);
-      color: #fff;
-      font-weight: 500;
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-    }
-    /* Chart container with blue gradient */
+
     #chart {
       width: 100%;
       height: 500px;
-      background: linear-gradient(135deg, #d0e3fc, #a6c8ff);
       border-radius: 8px;
       padding: 10px;
-    }
-    /* Table styling */
-    table {
-      margin-top: 20px;
-    }
-    table thead th {
-      background-color: #90caf9;
-      color: #1a237e;
-    }
-    table tbody tr:nth-child(even) {
-      background-color: rgba(144, 202, 249, 0.2);
-    }
-    a {
-      color: #1e88e5;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    /* Custom styling for all form input fields */
-    .form-control {
-      background-color: #e3f2fd;
-      border: 1px solid #64b5f6;
-      color: #333;
-    }
-    .form-control:focus {
-      background-color: #d0e3fc;
-      border-color: #1e88e5;
-      box-shadow: none;
     }
   </style>
 </head>
 <body>
-  <div class="container my-4">
-    <div class="gradient-header rounded">
-      <h1>Бимодальное распределение заказов OZON</h1>
-      <p class="mb-0">Фильтрация и отображение</p>
-    </div>
+<div class="container my-4">
+  <div class="gradient-header">
+    <h1>Заказы OZON</h1>
+    <p class="mb-0">Фильтрация и отображение</p>
+  </div>
 
-    <!-- Input Section -->
-    <div class="card mb-4">
-      <div class="card-header">Загрузка данных JSON</div>
-      <div class="card-body">
-        <div class="mb-3">
-          <label for="jsonText" class="form-label">Вставьте JSON:</label>
-          <textarea id="jsonText" class="form-control" rows="4" placeholder="Paste JSON data here..."></textarea>
+  <!-- Input Section -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Загрузка данных JSON</h3>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <label for="jsonText" class="form-label">Вставьте JSON:</label>
+        <textarea id="jsonText" class="form-control" rows="4" placeholder="Paste JSON data here..."></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="jsonFile" class="form-label">Выберите JSON File:</label>
+        <input type="file" id="jsonFile" class="form-control" accept="application/json">
+      </div>
+      <div class="row g-2 mb-3">
+        <div class="col-sm-6">
+          <label for="minPrice" class="form-label">Минимальная цена:</label>
+          <input type="number" id="minPrice" class="form-control" placeholder="0">
         </div>
-        <div class="mb-3">
-          <label for="jsonFile" class="form-label">Выберите JSON File:</label>
-          <input type="file" id="jsonFile" class="form-control" accept="application/json">
+        <div class="col-sm-6">
+          <label for="maxPrice" class="form-label">Максимальная цена:</label>
+          <input type="number" id="maxPrice" class="form-control" placeholder="1 000 000">
         </div>
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="minPrice" class="form-label">Минимальная цена:</label>
-            <input type="number" id="minPrice" class="form-control" placeholder="0">
+      </div>
+      <button id="processBtn" class="btn btn-primary">Обработать JSON</button>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="row">
+      <div class="col-6">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                            <span class="bg-primary text-white avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/currency-dollar -->
+                              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-currency-rubel"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 19v-14h6a3 3 0 0 1 0 6h-8" /><path d="M14 15h-8" /></svg></span>
+              </div>
+              <div class="col">
+                <div class="font-weight-medium"><h4 id="totalSum">—</h4></div>
+                <div class="text-secondary">Общая сумма</div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-6">
-            <label for="maxPrice" class="form-label">Максимальная цена:</label>
-            <input type="number" id="maxPrice" class="form-control" placeholder="1 000 000">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                            <span class="bg-green text-white avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/currency-dollar -->
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></svg>
+                            </span>
+              </div>
+              <div class="col">
+                <div class="font-weight-medium"><h4 id="totalOrders">—</h4></div>
+                <div class="text-secondary">Всего заказов</div>
+              </div>
+            </div>
           </div>
-        </div>
-        <button id="processBtn" class="btn btn-primary">Обработать JSON</button>
-      </div>
-    </div>
-
-    <!-- Chart Section -->
-    <div class="card mb-4">
-      <div class="card-header">Гистограмма</div>
-      <div class="card-body">
-        <div id="chart"></div>
-      </div>
-    </div>
-
-    <!-- Orders in Selected Bin (placed under the chart) -->
-    <div class="card mb-4">
-      <div class="card-header">Заказы в выбранном столбце</div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table id="barOrdersTable" class="table table-hover">
-            <thead>
-              <tr>
-                <th>ID заказа</th>
-                <th>Дата</th>
-                <th>Цена</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Orders for the clicked bin will be inserted here -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Filtered Orders Table -->
-    <div class="card mb-4">
-      <div class="card-header">Отфильтрованные заказы</div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table id="ordersTable" class="table table-hover">
-            <thead>
-              <tr>
-                <th>ID заказа</th>
-                <th>Дата</th>
-                <th>Цена</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Filtered orders will be inserted here -->
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Percentiles Chart -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Распределение по перцентилям</h3>
+    </div>
+    <div class="card-body">
+      <div id="percentilesChart" style="height: 400px;"></div>
+    </div>
+  </div>
+
+  <!-- Chart Section -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Гистограмма</h3>
+    </div>
+    <div class="card-body">
+      <div id="chart"></div>
+    </div>
+  </div>
+
+  <!-- Orders in Selected Bin -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Заказы в выбранном столбце</h3>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="barOrdersTable" class="table table-hover">
+          <thead>
+          <tr>
+            <th>ID заказа</th>
+            <th>Дата</th>
+            <th>Цена</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtered Orders Table -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Отфильтрованные заказы</h3>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="ordersTable" class="table table-hover">
+          <thead>
+          <tr>
+            <th>ID заказа</th>
+            <th>Дата</th>
+            <th>Цена</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- ECharts Library -->
   <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
@@ -211,6 +219,16 @@
         alert("Please paste JSON or select a JSON file.");
       }
     });
+
+    function formatNumberWithSpaces(num) {
+      // Format with French locale to get space separators and comma decimal
+      const formatted = new Intl.NumberFormat('ru-RU', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(num);
+
+      return formatted
+    }
 
     function processJSON(data) {
       if (!data.orders || !Array.isArray(data.orders)) {
@@ -365,6 +383,56 @@
           updateBarOrdersTable(ordersInBin, lowerBound, lowerBound + currentBinWidth);
         }
       });
+
+
+      document.getElementById('totalSum').textContent = data.totalSum != null ? formatNumberWithSpaces(data.totalSum) : '—';
+      document.getElementById('totalOrders').textContent = data.totalOrders ?? '—';
+
+
+      // Render percentiles chart if available
+      if (data.percentiles) {
+        const pctChart = echarts.init(document.getElementById('percentilesChart'));
+        const pctKeys = Object.keys(data.percentiles).sort((a, b) => {
+          const aNum = parseFloat(a);
+          const bNum = parseFloat(b);
+          return aNum - bNum;
+        });
+        const pctValues = pctKeys.map(k => parseFloat(data.percentiles[k]));
+
+        pctChart.setOption({
+          title: {
+            text: 'Цены по перцентилям',
+            left: 'center',
+            textStyle: { color: '#1a237e' }
+          },
+          tooltip: {
+            trigger: 'axis'
+          },
+          xAxis: {
+            type: 'category',
+            data: pctKeys,
+            name: 'Перцентиль',
+            axisLine: { lineStyle: { color: '#1a237e' } }
+          },
+          yAxis: {
+            type: 'value',
+            name: 'Цена',
+            axisLine: { lineStyle: { color: '#1a237e' } }
+          },
+          series: [{
+            name: 'Цена',
+            type: 'line',
+            smooth: true,
+            data: pctValues,
+            itemStyle: {
+              color: '#42a5f5'
+            },
+            lineStyle: {
+              width: 3
+            }
+          }]
+        });
+      }
     }
 
     // Function to update the table of filtered orders
@@ -383,7 +451,7 @@
         const cellDate = document.createElement('td');
         cellDate.textContent = order.date || 'N/A';
         const cellPrice = document.createElement('td');
-        cellPrice.textContent = order.price;
+        cellPrice.textContent = formatNumberWithSpaces(order.price);
         row.appendChild(cellOrder);
         row.appendChild(cellDate);
         row.appendChild(cellPrice);
